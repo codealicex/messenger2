@@ -9,7 +9,7 @@ export default function Header() {
             <header className='sticky top-0 z-50 bg-white flex justify-between items-center p-10 shadow-sm'>
                 <div className='flex space-x-2'>
                     <Image 
-                        className='rounded-full mx-2 object-contain'
+                        className='rounded-full mx-2 object-contain w-auto h-auto'
                         src="/pic0.jpg"
                         width={50} height={10}
                         alt="Profile Picture"

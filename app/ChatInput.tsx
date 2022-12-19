@@ -3,11 +3,16 @@
 import { FormEvent, useState } from "react";
 import {v4 as uuid} from "uuid";
 import { Message } from "../typings";
+import useSWR from 'swr';
+import fetcher from "../utils/fetchMessages";
 
 export default function ChatInput() {
     const [input, setInput] = useState("");
+    const { data: messages, error, mutate } = useSWR('/api/getMessages', fetcher);
 
-    const addMessage = (e: FormEvent<HTMLFormElement>) => {
+    // console.log(messages);
+
+    const addMessage = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!input) return;
         const messageToSend = input;
@@ -17,9 +22,9 @@ export default function ChatInput() {
             id,
             message: messageToSend,
             created_at: Date.now(),
-            username: 'Yellyow',
-            profile_pic: 'https://github.com/yellyoww.png',
-            email: 'yellyoww@gmail.com'
+            username: 'alice',
+            profile_pic: 'https://github.com/codealicex.png',
+            email: 'codealicex@proton.me'
         }
 
         const uploadMessageToUpstash = async () => {
@@ -32,14 +37,19 @@ export default function ChatInput() {
             });
             const data = await res.json();
             console.log("Message ADD >>>", data);
+            
+            return [data.message, ...messages!];
         }
-        uploadMessageToUpstash();
+        await mutate(uploadMessageToUpstash, {
+            optimisticData: [message, ...messages!],
+            rollbackOnError: true
+        });
     }
 
     return (
         <form
             onSubmit={addMessage} 
-            className='fixed bottom-0 z-50 w-full flex px-10 py-5 space-x-2 border-t border-gray-100'
+            className='fixed bottom-0 z-50 w-full flex px-10 py-5 space-x-2 border-t border-gray-100 bg-white'
         >
             <input 
                 value={input}
