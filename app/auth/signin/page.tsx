@@ -9,7 +9,7 @@ export default async function SignInPage() {
         <div className="grid justify-center pt-16 space-y-16">
             <div>
                 <Image 
-                    className="rounded-full mx-2 object-cover"
+                    className="rounded-full mx-2 object-cover w-auto h-auto"
                     width={180}
                     height={180}
                     src={"/logo-Meta.png"}

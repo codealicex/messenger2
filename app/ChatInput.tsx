@@ -5,8 +5,13 @@ import {v4 as uuid} from "uuid";
 import { Message } from "../typings";
 import useSWR from 'swr';
 import fetcher from "../utils/fetchMessages";
+import { unstable_getServerSession } from "next-auth/next";
 
-export default function ChatInput() {
+type Props = {
+    session: Awaited<ReturnType<typeof unstable_getServerSession>>;
+}
+
+export default function ChatInput({ session }: Props) {
     const [input, setInput] = useState("");
     const { data: messages, error, mutate } = useSWR('/api/getMessages', fetcher);
 
@@ -14,17 +19,25 @@ export default function ChatInput() {
 
     const addMessage = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!input) return;
+        if (!input || !session) return;
         const messageToSend = input;
         setInput("");
         const id = uuid();
+        // const message: Message = {
+        //     id,
+        //     message: messageToSend,
+        //     created_at: Date.now(),
+        //     username: 'alice',
+        //     profile_pic: 'https://res.cloudinary.com/dxwmokycj/image/upload/v1671521128/me/img0_ezwrui.png',
+        //     email: 'codealicex@proton.me'
+        // }
         const message: Message = {
             id,
             message: messageToSend,
             created_at: Date.now(),
-            username: 'alice',
-            profile_pic: 'https://res.cloudinary.com/dxwmokycj/image/upload/v1671521128/me/img0_ezwrui.png',
-            email: 'codealicex@proton.me'
+            username: session.user?.name!,
+            profile_pic: session.user?.image!,
+            email: session.user?.email!
         }
 
         const uploadMessageToUpstash = async () => {
@@ -53,6 +66,7 @@ export default function ChatInput() {
         >
             <input 
                 value={input}
+                disabled={!session}
                 onChange={e => setInput(e.target.value)}
                 type="text"
                 placeholder="Enter message here ..."

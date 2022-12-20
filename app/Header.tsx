@@ -1,22 +1,23 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import LogoutButton from './LogoutButton';
+import { unstable_getServerSession } from "next-auth/next";
 
-export default function Header() {
-    const session = true;
+export default async function Header() {
+    const session = await unstable_getServerSession();
     if (session) {
         return (
             <header className='sticky top-0 z-50 bg-white flex justify-between items-center p-10 shadow-sm'>
                 <div className='flex space-x-2'>
                     <Image 
                         className='rounded-full mx-2 object-contain w-auto h-auto'
-                        src="/pic0.jpg"
+                        src={session.user?.image!}
                         width={50} height={10}
                         alt="Profile Picture"
                     />
                     <div>
                         <p className='text-blue-400'>Logged in as:</p>
-                        <p className='font-bold text-lg'>alice</p>
+                        <p className='font-bold text-lg'>{session.user?.name}</p>
                     </div>
                 </div>
                 <LogoutButton />
