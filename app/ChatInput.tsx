@@ -23,7 +23,7 @@ export default function ChatInput() {
             message: messageToSend,
             created_at: Date.now(),
             username: 'alice',
-            profile_pic: 'https://github.com/codealicex.png',
+            profile_pic: 'https://res.cloudinary.com/dxwmokycj/image/upload/v1671521128/me/img0_ezwrui.png',
             email: 'codealicex@proton.me'
         }
 
