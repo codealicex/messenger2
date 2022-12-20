@@ -5,10 +5,10 @@ import MessageList from "./MessageList";
 const url = process.env.URL || "http://localhost:3000";
 
 export default async function HomePage() {
-  // const data = await fetch(`${url}/api/getMessages`).then(res => res.json());
+  const data = await fetch(`${url}/api/getMessages`).then(res => res.json());
   // // console.log(data);
-  // const messages: Message[] = data.messages;
-  const messages: Message[] = [];
+  const messages: Message[] = data.messages;
+  // const messages: Message[] = [];
 
   return (
     <main>
