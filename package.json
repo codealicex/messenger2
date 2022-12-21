@@ -19,7 +19,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "^4.29.3-appdir.0",
+    "@netlify/plugin-nextjs": "^4.29.3",
     "@types/node": "18.11.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",

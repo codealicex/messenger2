@@ -6,9 +6,11 @@ import { Message } from "../typings";
 import useSWR from 'swr';
 import fetcher from "../utils/fetchMessages";
 import { unstable_getServerSession } from "next-auth/next";
+import { Session } from "next-auth";
 
 type Props = {
-    session: Awaited<ReturnType<typeof unstable_getServerSession>>;
+    // session: Awaited<ReturnType<typeof unstable_getServerSession>>;
+    session: Session | null;
 }
 
 export default function ChatInput({ session }: Props) {
@@ -35,9 +37,9 @@ export default function ChatInput({ session }: Props) {
             id,
             message: messageToSend,
             created_at: Date.now(),
-            username: session.user?.name!,
-            profile_pic: session.user?.image!,
-            email: session.user?.email!
+            username: session?.user?.name!,
+            profile_pic: session?.user?.image!,
+            email: session?.user?.email!
         }
 
         const uploadMessageToUpstash = async () => {
